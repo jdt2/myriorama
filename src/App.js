@@ -1,26 +1,52 @@
 import React from 'react';
+import { Component } from "react";
 import logo from './logo.svg';
 import './App.css';
+import Myriorama from './Myriorama';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+
+    this.state = {
+      inRoom: false,
+    }
+
+    // bind functions
+    this.initRoom = this.initRoom.bind(this);
+  }
+
+
+  initRoom() {
+    this.drone = new window.Scaledrone('pp6UqZjBbcWHW77o', {
+      data: {
+        datetime: new Date(),
+      }
+    });
+    this.setState({ inRoom: true });
+  }
+
+  render() {
+    if (this.state.inRoom) {
+      return (
+        <Myriorama
+          drone={this.drone}
+        />
+      );
+    }
+    return (
+      <div className="App">
+        <Button
+          onClick={this.initRoom}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          Enter Room
+        </Button>
+      </div>
+    );
+  }
 }
 
 export default App;
