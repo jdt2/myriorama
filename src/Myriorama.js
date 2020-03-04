@@ -4,9 +4,7 @@ import './Myriorama.css';
 import imageLoader from './images';
 import image from './assets/myriorama1/Frame01.gif';
 import { Card, Button } from 'react-bootstrap';
-import { fadeIn } from 'react-animations';
-import Radium, { StyleRoot } from 'radium';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { CSSTransition } from 'react-transition-group';
 
 class Myriorama extends Component {
 
@@ -35,12 +33,12 @@ class Myriorama extends Component {
         this.room = this.drone.subscribe("observable-room");
         this.room.on('message', message => {
             this.setState({ myIndex: message.data.indices[this.state.id] });
-            this.setState({
+            /* this.setState({
                 fadeIn: {
                     animation: 'x 1s',
                     animationName: Radium.keyframes(fadeIn, "fadeIn"),
                 }
-            })
+            }) */
         });
 
         this.room.on('members', members => {
@@ -105,7 +103,7 @@ class Myriorama extends Component {
         return (
             <>
                 {this.state.myIndex > -1 ?
-                    <ReactCSSTransitionGroup
+                    <CSSTransition
                         transitionName="example"
                         transitionAppear={true}
                         transitionAppearTimeout={500}
@@ -117,9 +115,8 @@ class Myriorama extends Component {
                             alt={this.state.myIndex}
                             width="100%"
                             onClick={() => this.initMyriorama()}
-                            style={this.state.fadeIn}
                         />
-                    </ReactCSSTransitionGroup>
+                    </CSSTransition>
                     :
                     <div className="MyrioramaControl">
                         Your Client ID: {this.state.id}<br />
